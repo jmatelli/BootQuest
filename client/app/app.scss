@@ -21,21 +21,36 @@ $brand-warning: #f39c12;
     padding: 0.2em 0;
 }
 
+#bootquest-logo,
 .default-avatar {
   background-color: #f0f0f0;
   display: inline-block;
-  width: 40px;
-  height: 40px;
   position: relative;
 
   &::after {
-    content: 'Bs';
+    content: 'Bq';
     font-family: 'Marck Script', cursive;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
   }
+}
+
+#bootquest-logo {
+  width: 120px;
+  height: 120px;
+
+  &::after {
+    font-size: 50px;
+    font-size: 5rem;
+    color: black;
+  }
+}
+
+.default-avatar {
+  width: 40px;
+  height: 40px;
 }
 
 // Component styles are injected through grunt
