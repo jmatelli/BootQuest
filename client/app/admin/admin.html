@@ -1,0 +1,32 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+  <p>The delete user and user index api routes are restricted to users with the 'admin' role.</p>
+  <table class="table users-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Avatar</th>
+        <th>Name</th>
+        <th>E-mail</th>
+        <th>Role</th>
+        <th>Provider</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in users">
+        <td>{{$index+1}}</td>
+        <td>
+          <img src="{{user.avatar}}" alt="" ng-if="user.avatar !== undefined"/>
+          <span class="img-circle default-avatar"></span>
+        </td>
+        <td>{{user.name}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.role}}</td>
+        <td>{{user.provider}}</td>
+        <td><button class="btn btn-danger" ng-click="delete(user)"><span class="fa fa-trash-o"></span></button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
