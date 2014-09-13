@@ -5,6 +5,7 @@ angular.module('bootquestApp')
     $routeProvider
       .when('/', {
         templateUrl: 'app/main/main.html',
-        controller: 'MainCtrl'
+        controller: 'MainCtrl',
+        title: 'BootQuest'
       });
   });
