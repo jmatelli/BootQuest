@@ -59,4 +59,8 @@ angular.module('bootquestApp', [
     $rootScope.$on('$routeChangeSuccess', function (event, current) {
       $rootScope.title = current.$$route.title;
     });
+
+    $rootScope.$on('settingsSaved', function (event, user) {
+      $rootScope.nameToShow = user.useRealName && typeof user.name !== 'undefined' ? user.name : user.username ;
+    });
   });

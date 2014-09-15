@@ -12,6 +12,12 @@ angular.module('bootquestApp')
           controller:'password'
         }
       },
+      editSettings: {
+        method: 'PUT',
+        params: {
+          controller:'settings'
+        }
+      },
       get: {
         method: 'GET',
         params: {

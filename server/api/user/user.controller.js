@@ -80,6 +80,35 @@ exports.changePassword = function(req, res, next) {
 };
 
 /**
+ * Edit a users settings
+ */
+exports.editSettings = function(req, res, next) {
+  var userId = req.user._id;
+  var oldPass = String(req.body.oldPassword);
+  var newPass = String(req.body.newPassword);
+  var useRealName = Boolean(req.body.useRealName);
+
+  console.log(typeof oldPass !== 'undefined' && typeof newPass !== 'undefined', useRealName);
+
+  User.findById(userId, function (err, user) {
+    if (typeof useRealName !== 'undefined' || typeof oldPass !== 'undefined' || typeof newPass !== 'undefined') {
+      user.useRealName = useRealName;
+
+      if(typeof oldPass !== 'undefined' && typeof newPass !== 'undefined' && user.authenticate(oldPass)) {
+        user.password = newPass;
+      }
+
+      user.save(function(err) {
+        if (err) return validationError(res, err);
+        res.send(200);
+      });
+    } else {
+      res.send(403);
+    }
+  });
+};
+
+/**
  * Get my info
  */
 exports.me = function(req, res, next) {

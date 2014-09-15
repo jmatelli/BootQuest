@@ -2,9 +2,9 @@
 
 angular.module('bootquestApp')
   .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
-    var currentUser = {};
+    $rootScope.currentUser = {};
     if($cookieStore.get('token')) {
-      currentUser = User.get();
+      $rootScope.currentUser = User.get();
     }
 
     return {
@@ -26,7 +26,7 @@ angular.module('bootquestApp')
         }).
         success(function(data) {
           $cookieStore.put('token', data.token);
-          currentUser = User.get();
+            $rootScope.currentUser = User.get();
           deferred.resolve(data);
           return cb();
         }).
@@ -46,7 +46,7 @@ angular.module('bootquestApp')
        */
       logout: function() {
         $cookieStore.remove('token');
-        currentUser = {};
+        $rootScope.currentUser = {};
       },
 
       /**
@@ -62,7 +62,7 @@ angular.module('bootquestApp')
         return User.save(user,
           function(data) {
             $cookieStore.put('token', data.token);
-            currentUser = User.get();
+            $rootScope.currentUser = User.get();
             return cb(user);
           },
           function(err) {
@@ -82,10 +82,27 @@ angular.module('bootquestApp')
       changePassword: function(oldPassword, newPassword, callback) {
         var cb = callback || angular.noop;
 
-        return User.changePassword({ id: currentUser._id }, {
+        return User.changePassword({ id: $rootScope.currentUser._id }, {
           oldPassword: oldPassword,
           newPassword: newPassword
         }, function(user) {
+          return cb(user);
+        }, function(err) {
+          return cb(err);
+        }).$promise;
+      },
+
+      /**
+       * Edit Settings
+       *
+       * @param  {Object}   settings
+       * @param  {Function} callback    - optional
+       * @return {Promise}
+       */
+      editSettings: function(settings, callback) {
+        var cb = callback || angular.noop;
+
+        return User.editSettings({ id: $rootScope.currentUser._id }, settings, function(user) {
           return cb(user);
         }, function(err) {
           return cb(err);
@@ -98,7 +115,7 @@ angular.module('bootquestApp')
        * @return {Object} user
        */
       getCurrentUser: function() {
-        return currentUser;
+        return $rootScope.currentUser;
       },
 
       /**
@@ -107,20 +124,20 @@ angular.module('bootquestApp')
        * @return {Boolean}
        */
       isLoggedIn: function() {
-        return currentUser.hasOwnProperty('role');
+        return $rootScope.currentUser.hasOwnProperty('role');
       },
 
       /**
        * Waits for currentUser to resolve before checking if user is logged in
        */
       isLoggedInAsync: function(cb) {
-        if(currentUser.hasOwnProperty('$promise')) {
-          currentUser.$promise.then(function() {
+        if($rootScope.currentUser.hasOwnProperty('$promise')) {
+          $rootScope.currentUser.$promise.then(function() {
             cb(true);
           }).catch(function() {
             cb(false);
           });
-        } else if(currentUser.hasOwnProperty('role')) {
+        } else if($rootScope.currentUser.hasOwnProperty('role')) {
           cb(true);
         } else {
           cb(false);
@@ -133,7 +150,7 @@ angular.module('bootquestApp')
        * @return {Boolean}
        */
       isAdmin: function() {
-        return currentUser.role === 'admin';
+        return $rootScope.currentUser.role === 'admin';
       },
 
       /**

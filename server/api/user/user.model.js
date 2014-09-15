@@ -9,6 +9,7 @@ var authTypes = ['github', 'twitter', 'facebook', 'google'];
 var UserSchema = new Schema({
   name: String,
   username: { type: String, require: true },
+  useRealName: { type: Boolean, default: true },
   email: { type: String, lowercase: true, require: true },
   role: { type: String, default: 'user' },
   hashedPassword: String,
@@ -42,6 +43,7 @@ UserSchema
   .get(function() {
     return {
       'name': this.name,
+      'username': this.username,
       'role': this.role,
       'avatar': 'http://www.gravatar.com/avatar/' + md5(this.email)
     };

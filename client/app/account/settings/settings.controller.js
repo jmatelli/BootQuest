@@ -1,21 +1,24 @@
 'use strict';
 
 angular.module('bootquestApp')
-  .controller('SettingsCtrl', function ($scope, User, Auth) {
+  .controller('SettingsCtrl', function ($rootScope, $scope, User, Auth) {
     $scope.errors = {};
 
-    $scope.changePassword = function(form) {
+    $scope.user = $rootScope.currentUser;
+
+    $scope.editSettings = function (form) {
       $scope.submitted = true;
-      if(form.$valid) {
-        Auth.changePassword( $scope.user.oldPassword, $scope.user.newPassword )
-        .then( function() {
-          $scope.message = 'Password successfully changed.';
-        })
-        .catch( function() {
-          form.password.$setValidity('mongoose', false);
-          $scope.errors.other = 'Incorrect password';
-          $scope.message = '';
-        });
+      if (form.$valid) {
+        Auth.editSettings($scope.user)
+          .then(function () {
+            $rootScope.$emit('settingsSaved', $scope.user);
+            $scope.message = 'Settings successfully changed.';
+          })
+          .catch(function () {
+            form.password.$setValidity('mongoose', false);
+            $scope.errors.other = 'Incorrect password';
+            $scope.message = '';
+          });
       }
-		};
+    };
   });
