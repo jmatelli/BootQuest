@@ -72,6 +72,23 @@ UserSchema
     return email.length;
   }, 'Email cannot be blank');
 
+// Validate empty username
+UserSchema
+  .path('username')
+  .validate(function(username) {
+    if (authTypes.indexOf(this.provider) !== -1) return true;
+    return username.length;
+  }, 'Username cannot be blank');
+
+// Check invalid username
+UserSchema
+  .path('username')
+  .validate(function(username) {
+    if (authTypes.indexOf(this.provider) !== -1) return true;
+    console.log(/^[0-9a-zA-Z_-]{3,20}$/.test(username), username);
+    return /^[0-9a-zA-Z_-]{3,20}$/.test(username);
+  }, 'This username is invalid');
+
 // Validate empty password
 UserSchema
   .path('hashedPassword')
@@ -94,6 +111,21 @@ UserSchema
       respond(true);
     });
 }, 'The specified email address is already in use.');
+
+// Validate email is not taken
+UserSchema
+  .path('username')
+  .validate(function(value, respond) {
+    var self = this;
+    this.constructor.findOne({username: value}, function(err, user) {
+      if(err) throw err;
+      if(user) {
+        if(self.id === user.id) return respond(true);
+        return respond(false);
+      }
+      respond(true);
+    });
+  }, 'The specified username is already in use.');
 
 var validatePresenceOf = function(value) {
   return value && value.length;

@@ -13,11 +13,13 @@ angular.module('bootquestApp')
           .then(function () {
             $rootScope.$emit('settingsSaved', $scope.user);
             $scope.message = 'Settings successfully changed.';
+            $scope.success = true;
           })
           .catch(function () {
             form.password.$setValidity('mongoose', false);
             $scope.errors.other = 'Incorrect password';
             $scope.message = '';
+            $scope.success = false;
           });
       }
     };
