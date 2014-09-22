@@ -88,8 +88,6 @@ exports.editSettings = function(req, res, next) {
   var newPass = String(req.body.newPassword);
   var useRealName = Boolean(req.body.useRealName);
 
-  console.log(typeof oldPass !== 'undefined' && typeof newPass !== 'undefined', useRealName);
-
   User.findById(userId, function (err, user) {
     if (typeof useRealName !== 'undefined' || typeof oldPass !== 'undefined' || typeof newPass !== 'undefined') {
       user.useRealName = useRealName;

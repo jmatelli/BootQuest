@@ -17,7 +17,7 @@ angular.module('bootquestApp')
         })
         .then( function() {
           // Account created, redirect to home
-          $location.path('/');
+          $location.path('/character');
         })
         .catch( function(err) {
           err = err.data;

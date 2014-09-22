@@ -1,0 +1,172 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <a href="{{$root.goBackUrl}}"><i class="fa fa-arrow-circle-left"></i> Go back</a>
+    </div>
+  </div>
+
+  <div class="row row-heading">
+    <div class="col-md-12">
+      <h1>Create a new character</h1>
+    </div>
+  </div>
+
+  <div class="row" ng-if="characterLimitReached">
+    <div class="col-md-12">
+      <div class="alert alert-danger" role="alert">
+        <strong>Oh snap!</strong> {{characterLimitReachedMessage}}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <form class="form form-horizontal" name="form" ng-submit="save(form)" novalidate>
+
+        <div class="form-group" ng-class="{ 'has-success': form.name.$valid && submitted,
+                                            'has-error': form.name.$invalid && submitted }">
+          <label for="name" class="control-label col-md-4">Name*</label>
+
+          <div class="col-md-8">
+            <input class="form-control" type="text" name="name" id="name" ng-model="character.name" required mongoose-error/>
+
+            <p class="help-block" ng-show="form.name.$error.email && submitted">
+              Doesn't look like a valid name.
+            </p>
+            <p class="help-block" ng-show="form.name.$error.required && submitted">
+              What's the name of your character?
+            </p>
+            <p class="help-block" ng-show="form.name.$error.mongoose">
+              {{ errors.name }}
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-success': form.race.$valid && submitted,
+                                            'has-error': form.race.$invalid && submitted }">
+          <label for="race" class="control-label col-md-4">Race*</label>
+
+          <div class="col-md-8">
+            <input type="hidden" name="race" id="race" ng-model="character.race" required/>
+            <div class="btn-group btn-group-justified">
+              <label class="btn btn-default" ng-model="character.race" btn-radio="'human'">Human</label>
+              <label class="btn btn-default" ng-model="character.race" btn-radio="'elf'">Elf</label>
+              <label class="btn btn-default" ng-model="character.race" btn-radio="'dwarf'">Dwarf</label>
+              <label class="btn btn-default" ng-model="character.race" btn-radio="'orc'">Orc</label>
+            </div>
+            <p class="help-block" ng-show="form.race.$error.required && submitted">
+              What's the race of your character?
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-success': form.class.$valid && submitted,
+                                            'has-error': form.class.$invalid && submitted }">
+          <label for="class" class="control-label col-md-4">Class*</label>
+
+          <div class="col-md-8">
+            <input type="hidden" name="class" id="class" ng-model="character.class" required/>
+            <div class="btn-group btn-group-justified">
+              <label class="btn btn-default" ng-model="character.class" btn-radio="'knight'">Knight</label>
+              <label class="btn btn-default" ng-model="character.class" btn-radio="'rogue'">Rogue</label>
+              <label class="btn btn-default" ng-model="character.class" btn-radio="'mage'">Mage</label>
+              <label class="btn btn-default" ng-model="character.class" btn-radio="'cleric'">Cleric</label>
+            </div>
+            <p class="help-block" ng-show="form.class.$error.required && submitted">
+              What's the class of your character?
+            </p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="name" class="control-label col-md-4">Strength</label>
+
+          <div class="col-md-8">
+            <div class="progress character-progress">
+              <div
+                class="progress-bar progress-bar-info"
+                role="progressbar"
+                aria-valuenow="{{character.stats.strength}}"
+                aria-valuemin="0"
+                aria-valuemax="20"
+                ng-style="{ 'width': (character.stats.strength*100/20)+ '%' }">{{character.stats.strength}}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="name" class="control-label col-md-4">Constitution</label>
+
+          <div class="col-md-8">
+            <div class="progress character-progress">
+              <div
+                class="progress-bar progress-bar-info"
+                role="progressbar"
+                aria-valuenow="{{character.stats.constitution}}"
+                aria-valuemin="0"
+                aria-valuemax="20"
+                ng-style="{ 'width': (character.stats.constitution*100/20)+ '%' }">{{character.stats.constitution}}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="name" class="control-label col-md-4">Dexterity</label>
+
+          <div class="col-md-8">
+            <div class="progress character-progress">
+              <div
+                class="progress-bar progress-bar-info"
+                role="progressbar"
+                aria-valuenow="{{character.stats.dexterity}}"
+                aria-valuemin="0"
+                aria-valuemax="20"
+                ng-style="{ 'width': (character.stats.dexterity*100/20)+ '%' }">{{character.stats.dexterity}}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="name" class="control-label col-md-4">Intelligence</label>
+
+          <div class="col-md-8">
+            <div class="progress character-progress">
+              <div
+                class="progress-bar progress-bar-info"
+                role="progressbar"
+                aria-valuenow="{{character.stats.intelligence}}"
+                aria-valuemin="0"
+                aria-valuemax="20"
+                ng-style="{ 'width': (character.stats.intelligence*100/20)+ '%' }">{{character.stats.intelligence}}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="name" class="control-label col-md-4">Luck</label>
+
+          <div class="col-md-8">
+            <div class="progress character-progress">
+              <div
+                class="progress-bar progress-bar-info"
+                role="progressbar"
+                aria-valuenow="{{character.stats.luck}}"
+                aria-valuemin="0"
+                aria-valuemax="20"
+                ng-style="{ 'width': (character.stats.luck*100/20)+ '%' }">{{character.stats.luck}}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-offset-4 col-md-8">
+            <button type="submit" class="btn btn-primary btn-lg">Create</button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

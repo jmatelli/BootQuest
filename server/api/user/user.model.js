@@ -85,7 +85,6 @@ UserSchema
   .path('username')
   .validate(function(username) {
     if (authTypes.indexOf(this.provider) !== -1) return true;
-    console.log(/^[0-9a-zA-Z_-]{3,20}$/.test(username), username);
     return /^[0-9a-zA-Z_-]{3,20}$/.test(username);
   }, 'This username is invalid');
 

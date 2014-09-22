@@ -24,6 +24,10 @@ $brand-warning: #f39c12;
  * App-wide Styles
  */
 
+body {
+  padding-bottom: 50px;
+}
+
 .browsehappy {
     margin: 0.2em 0;
     background: #ccc;
@@ -63,10 +67,19 @@ $brand-warning: #f39c12;
   height: 40px;
 }
 
+.row-heading {
+  margin-bottom: 20px;
+}
+
+.btn-add {
+  margin-top: 20px;
+}
+
 // Component styles are injected through grunt
 // injector
 @import 'account/login/login.scss';
 @import 'admin/admin.scss';
+@import 'character/character.scss';
 @import 'main/main.scss';
 @import 'footer/footer.scss';
 @import 'navbar/navbar.scss';

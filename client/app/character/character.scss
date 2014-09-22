@@ -1,0 +1,22 @@
+.character-progress {
+  margin-top: 7px;
+  margin-bottom: 0;
+}
+
+.list-characters {
+  .btn-danger {
+    margin-left: 10px;
+  }
+}
+
+.list-stats {
+  td span {
+    display: inline-block;
+    width: 50px;
+    text-align: center;
+  }
+}
+
+.progress-exp[aria-valuenow="0"] {
+  min-width: 70px;
+}

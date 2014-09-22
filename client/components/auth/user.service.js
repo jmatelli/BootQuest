@@ -6,23 +6,8 @@ angular.module('bootquestApp')
       id: '@_id'
     },
     {
-      changePassword: {
-        method: 'PUT',
-        params: {
-          controller:'password'
-        }
-      },
-      editSettings: {
-        method: 'PUT',
-        params: {
-          controller:'settings'
-        }
-      },
-      get: {
-        method: 'GET',
-        params: {
-          id:'me'
-        }
-      }
+      changePassword: { method: 'PUT', params: { controller:'password' } },
+      editSettings: { method: 'PUT', params: { controller:'settings' } },
+      get: { method: 'GET', params: { id:'me' } }
 	  });
   });

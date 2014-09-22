@@ -18,6 +18,10 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+  require('../api/potion/potion.socket').register(socket);
+  require('../api/armor/armor.socket').register(socket);
+  require('../api/weapon/weapon.socket').register(socket);
+  require('../api/character/character.socket').register(socket);
   require('../api/thing/thing.socket').register(socket);
 }
 

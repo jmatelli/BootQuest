@@ -1,0 +1,7 @@
+{
+  "CHARACTERS": {
+    "TITLE_0": "Aucun personnages",
+    "TITLE_1": "1 personnage",
+    "TITLE_N": "{{nb_elements}} personnages"
+  }
+}

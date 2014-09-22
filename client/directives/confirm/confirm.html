@@ -1,0 +1,15 @@
+<form novalidate>
+  <div class="modal-header">
+    <a href="" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancel()">&times;</a>
+    <h2 class="modal-title">{{title}}</h2>
+  </div>
+
+  <div class="modal-body">
+    {{message}}
+  </div>
+
+  <div class="modal-footer">
+    <a href="" class="btn btn-lg btn-default" ng-click="cancel()">Cancel</a>
+    <input type="submit" class="btn btn-lg {{btnColorType}}" ng-click="ok()" value="Confirm" focus-on="true">
+  </div>
+</form>

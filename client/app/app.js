@@ -47,8 +47,12 @@ angular.module('bootquestApp', [
   })
 
   .run(function ($rootScope, $location, Auth) {
+
     // Redirect to login if route requires auth and you're not logged in
-    $rootScope.$on('$routeChangeStart', function (event, next) {
+    $rootScope.$on('$routeChangeStart', function (event, next, prev) {
+      if (typeof prev !== 'undefined')
+        $rootScope.goBackUrl = prev.$$route.originalPath;
+
       Auth.isLoggedInAsync(function(loggedIn) {
         if (next.authenticate && !loggedIn) {
           $location.path('/login');

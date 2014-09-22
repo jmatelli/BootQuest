@@ -1,0 +1,136 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <a href="{{$root.goBackUrl}}"><i class="fa fa-arrow-circle-left"></i> Go back</a>
+    </div>
+  </div>
+
+  <div class="row row-heading">
+    <div class="col-md-12">
+      <h1><i class="fa fa-user"></i> {{character.name}} <small>Level {{character.level}}</small></h1>
+    </div>
+  </div>
+
+  <div class="row list-stats">
+    <div class="col-md-6">
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="progress">
+            <div
+              class="progress-bar progress-bar-danger progress-exp"
+              role="progressbar"
+              aria-valuenow="{{character.currentHp}}"
+              aria-valuemin="0"
+              aria-valuemax="{{character.hp}}"
+              ng-style="{ 'width': (character.currentHp*100/character.hp) + '%' }">HP: {{character.currentHp}}/{{character.hp}}</div>
+          </div>
+          <div class="progress">
+            <div
+              class="progress-bar progress-bar-info progress-exp"
+              role="progressbar"
+              aria-valuenow="{{character.currentMp}}"
+              aria-valuemin="0"
+              aria-valuemax="{{character.mp}}"
+              ng-style="{ 'width': (character.currentMp*100/character.mp) + '%' }">MP: {{character.currentMp}}/{{character.mp}}</div>
+          </div>
+          <div class="progress">
+            <div
+              class="progress-bar progress-exp"
+              role="progressbar"
+              aria-valuenow="{{character.exp}}"
+              aria-valuemin="0"
+              aria-valuemax="{{character.nextLevel}}"
+              ng-style="{ 'width': (character.exp*100/character.nextLevel) + '%' }">Exp: {{character.exp}}/{{character.nextLevel}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table">
+            <colgroup>
+              <col width="70%"/>
+              <col width="30%"/>
+            </colgroup>
+            <thead>
+            <tr>
+              <th>Stat</th>
+              <th class="text-center">#</th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="stat in character.stats">
+                <td>{{stat.type}}</td>
+                <td class="text-center">
+                  <button
+                    class="btn btn-sm btn-danger"
+                    ng-click="decrease(stat.type, $index)"
+                    ng-disabled="character.statPoints === 0 || character.originalStats[$index].value === stat.value">
+                    <i class="fa fa-minus"></i>
+                  </button>
+
+                  <span>{{stat.value}}</span>
+
+                  <button
+                    class="btn btn-sm btn-info"
+                    ng-click="increase(stat.type, $index)"
+                    ng-disabled="character.statPoints === 0">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td>
+                  Stat points
+                </td>
+                <td class="text-center">
+                 <strong>{{character.statPoints}}</strong>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <button class="btn btn-success pull-right" ng-if="statsModified" ng-click="saveStatPoints()">Validate stats</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-md-6">
+      <h2>Inventory</h2>
+
+      <tabset>
+        <tab>
+          <tab-heading>
+            <i class="fa fa-gavel"></i> Weapons
+          </tab-heading>
+
+          My weapons
+        </tab>
+        <tab>
+          <tab-heading>
+            <i class="fa fa-shield"></i> Armors
+          </tab-heading>
+
+          My armors
+        </tab>
+        <tab>
+          <tab-heading>
+            <i class="fa fa-flask"></i> Potions
+          </tab-heading>
+
+          My potions
+        </tab>
+      </tabset>
+    </div>
+  </div>
+</div>

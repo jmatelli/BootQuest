@@ -4,7 +4,12 @@ angular.module('bootquestApp')
   .controller('NavbarCtrl', function ($cookieStore, $rootScope, $scope, $location, Auth, User) {
     $scope.menu = [{
       'title': 'Home',
-      'link': '/'
+      'link': '/',
+      authenticated: 'all'
+    },{
+      'title': 'Character',
+      'link': '/character',
+      authenticated: true
     }];
 
     $rootScope.nameToShow = !$rootScope.currentUser.useRealName || typeof $rootScope.currentUser.name === 'undefined' ? $rootScope.currentUser.username : $rootScope.currentUser.name;

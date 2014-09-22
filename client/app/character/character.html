@@ -1,0 +1,73 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+  <div class="row row-heading">
+    <div class="col-md-9">
+      <h1><i class="fa fa-users"></i> Characters <small>{{nbCharacters}}/{{$root.currentUser.nbCharMax}}</small></h1>
+    </div>
+    <div class="col-md-3" ng-if="!charactersLimitReached">
+      <a href="/character/new" class="btn btn-block btn-primary btn-lg btn-add"><i class="fa fa-plus"></i> Add a character</a>
+    </div>
+  </div>
+
+  <div class="row list-characters">
+    <div class="col-md-12" ng-if="nbCharacters === 0">
+      <div class="alert alert-info" role="alert">
+        <i class="fa fa-warning"></i> You have no characters yet, <a href="/character/new" class="alert-link">create one here</a>.
+      </div>
+    </div>
+
+    <div class="col-md-12" ng-if="deleteError">
+      <div class="alert alert-danger" role="alert">
+        <i class="fa fa-warning"></i> There was a problem while deleting the character, please try again.
+      </div>
+    </div>
+
+    <div class="col-md-4" ng-repeat="character in characters" ng-if="nbCharacters > 0">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <a href="/character/{{character._id}}">{{character.name}}</a>
+        </div>
+        <div class="panel-body">
+          <div class="progress">
+            <div
+              class="progress-bar progress-bar-danger progress-exp"
+              role="progressbar"
+              aria-valuenow="{{character.currentHp}}"
+              aria-valuemin="0"
+              aria-valuemax="{{character.hp}}"
+              ng-style="{ 'width': (character.currentHp*100/character.hp) + '%' }">HP: {{character.currentHp}}/{{character.hp}}</div>
+          </div>
+          <div class="progress">
+            <div
+              class="progress-bar progress-bar-info progress-exp"
+              role="progressbar"
+              aria-valuenow="{{character.currentMp}}"
+              aria-valuemin="0"
+              aria-valuemax="{{character.mp}}"
+              ng-style="{ 'width': (character.currentMp*100/character.mp) + '%' }">MP: {{character.currentMp}}/{{character.mp}}</div>
+          </div>
+          <div class="progress">
+            <div
+              class="progress-bar progress-exp"
+              role="progressbar"
+              aria-valuenow="{{character.exp}}"
+              aria-valuemin="0"
+              aria-valuemax="{{character.nextLevel}}"
+              ng-style="{ 'width': (character.exp*100/character.nextLevel) + '%' }">Exp: {{character.exp}}/{{character.nextLevel}}</div>
+          </div>
+        </div>
+        <div class="panel-footer clearfix">
+          <button class="btn btn-lg btn-danger pull-right" confirm="deleteCharacter(character._id)" confirm-title="Confirm" confirm-message="You're about to remove one of your characters, are you sure?">Remove</button>
+          <a class="btn btn-lg btn-primary pull-right" href="/character/{{character._id}}">See details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" ng-if="nbCharacters > 0">
+    <div class="col-md-12">
+      <button class="btn btn-sm btn-danger" confirm="deleteAllCharacters()" confirm-title="Confirm" confirm-message="You're about to remove all of your characters, are you sure?">Remove all characters</button>
+    </div>
+  </div>
+</div>
