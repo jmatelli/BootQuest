@@ -26,7 +26,7 @@
     <div class="col-md-4" ng-repeat="character in characters" ng-if="nbCharacters > 0">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <a href="/character/{{character._id}}">{{character.name}}</a>
+          <a href="/character/{{character._id}}"><i class="fa fa-user"></i> {{character.name}}</a>
         </div>
         <div class="panel-body">
           <div class="progress">
@@ -58,8 +58,12 @@
           </div>
         </div>
         <div class="panel-footer clearfix">
-          <button class="btn btn-lg btn-danger pull-right" confirm="deleteCharacter(character._id)" confirm-title="Confirm" confirm-message="You're about to remove one of your characters, are you sure?">Remove</button>
-          <a class="btn btn-lg btn-primary pull-right" href="/character/{{character._id}}">See details</a>
+          <button
+            class="btn btn-lg btn-danger pull-right"
+            confirm="deleteCharacter(character._id)"
+            confirm-title="Confirm"
+            confirm-message="You're about to remove one of your characters, are you sure?"><i class="fa fa-times"></i> Remove</button>
+          <a class="btn btn-lg btn-primary pull-right" href="/character/{{character._id}}"><i class="fa fa-eye"></i> See details</a>
         </div>
       </div>
     </div>
@@ -67,7 +71,11 @@
 
   <div class="row" ng-if="nbCharacters > 0">
     <div class="col-md-12">
-      <button class="btn btn-sm btn-danger" confirm="deleteAllCharacters()" confirm-title="Confirm" confirm-message="You're about to remove all of your characters, are you sure?">Remove all characters</button>
+      <button
+        class="btn btn-sm btn-danger"
+        confirm="deleteAllCharacters()"
+        confirm-title="Confirm"
+        confirm-message="You're about to remove all of your characters, are you sure?"><i class="fa fa-times"></i> Remove all characters</button>
     </div>
   </div>
 </div>
