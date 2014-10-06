@@ -18,11 +18,23 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+  require('../api/characterAttribute/characterAttribute.socket').register(socket);
+  require('../api/attribute/attribute.socket').register(socket);
+  require('../api/klass/klass.socket').register(socket);
+  require('../api/race/race.socket').register(socket);
+  require('../api/supportMagicType/supportMagicType.socket').register(socket);
+  require('../api/defenseMagicType/defenseMagicType.socket').register(socket);
+  require('../api/attackMagicType/attackMagicType.socket').register(socket);
+  require('../api/potionType/potionType.socket').register(socket);
+  require('../api/armorType/armorType.socket').register(socket);
+  require('../api/weaponType/weaponType.socket').register(socket);
+  require('../api/supportMagic/supportMagic.socket').register(socket);
+  require('../api/defenseMagic/defenseMagic.socket').register(socket);
+  require('../api/attackMagic/attackMagic.socket').register(socket);
   require('../api/potion/potion.socket').register(socket);
   require('../api/armor/armor.socket').register(socket);
   require('../api/weapon/weapon.socket').register(socket);
   require('../api/character/character.socket').register(socket);
-  require('../api/thing/thing.socket').register(socket);
 }
 
 module.exports = function (socketio) {

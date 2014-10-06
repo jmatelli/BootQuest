@@ -5,12 +5,27 @@ angular.module('bootquestApp')
   /**
    * Character controller
    */
-  .controller('CharacterCtrl', function ($rootScope, $scope, Character, characterService) {
+  .controller('CharacterCtrl', function ($rootScope, $scope, _, Character, characterService, Race, Klass) {
+
+    var parseResponse = function (data) {
+      _.each(data, function (character) {
+        Race.read({ id: character._race }).$promise
+          .then(function (race) {
+            character.race = race.name;
+          });
+
+        Klass.read({ id: character._klass }).$promise
+          .then(function (klass) {
+            character.klass = klass.name;
+          });
+      });
+    };
 
     $scope.list = function () {
       Character.mine().$promise
         .then(function (characters) {
-          $scope.characters = characters
+          parseResponse(characters);
+          $scope.characters = characters;
           $scope.nbCharacters = characters.length;
           $scope.charactersLimitReached = $scope.nbCharacters === $rootScope.currentUser.nbCharMax;
         })
@@ -43,13 +58,14 @@ angular.module('bootquestApp')
   /**
    * New character controller
    */
-  .controller('CharacterNewCtrl', function ($location, $rootScope, $scope, Character) {
+  .controller('CharacterNewCtrl', function ($location, $rootScope, $scope, Character, Klass, Race) {
 
     var baseStatVal = 10;
 
     $scope.characterLimitReached = false;
 
     $scope.character = {};
+    $scope.character._creator = $rootScope.currentUser._id;
     $scope.character.stats = {};
     $scope.character.stats.strength = 10;
     $scope.character.stats.constitution = 10;
@@ -117,9 +133,22 @@ angular.module('bootquestApp')
       constitution: 0
     };
 
+    $scope.readRaces = function () {
+      Race.list().$promise
+        .then(function (races) {
+          $scope.races = races;
+        });
+    };
+
+    $scope.readKlasses = function () {
+      Klass.list().$promise
+        .then(function (klasses) {
+          $scope.klasses = klasses;
+        });
+    };
+
     $scope.save = function (form) {
       var character = _.omit($scope.character, 'stats');
-      character._creator = $rootScope.currentUser._id;
 
       $scope.submitted = true;
 
@@ -148,6 +177,9 @@ angular.module('bootquestApp')
           });
       }
     };
+
+    $scope.readRaces();
+    $scope.readKlasses();
 
     var watchRace = function (newVal, oldVal) {
       if (typeof newVal !== 'undefined' && newVal !== oldVal) {
@@ -185,56 +217,58 @@ angular.module('bootquestApp')
   /**
    * Character details controller
    */
-  .controller('CharacterDetailsCtrl', function ($rootScope, $routeParams, $scope, Character) {
+  .controller('CharacterDetailsCtrl', function ($rootScope, $routeParams, $scope, _, Attribute, Character, CharacterAttribute, characterAttributeService) {
 
-    var stats = ['strength', 'constitution', 'dexterity', 'intelligence', 'luck'];
-    var originalStatPoints;
+    var parseAttributes = function (data) {
+      _.each(data, function (characterAttribute) {
+        Attribute.read({ id: characterAttribute._attribute }).$promise
+          .then(function (attribute) {
+            attribute = _.omit(attribute, '_id');
+            attribute = _.omit(attribute, 'value');
+            angular.extend(characterAttribute, attribute);
+          });
+      });
+    };
 
     $scope.readCharacter = function () {
       Character.read({ id: $routeParams.id }).$promise
         .then(function (character) {
           $scope.character = character;
-          $scope.character.stats = [];
-          $scope.character.originalStats = [];
-          originalStatPoints = $scope.character.statPoints;
+          $scope.character.statPoints = 20;
+          $scope.character.originalStatPoints = angular.copy($scope.character.statPoints);
 
-          angular.forEach(stats, function (value) {
-            var stat = {
-              type: value,
-              value: $scope.character[value]
-            };
-
-            var stat2 = angular.copy(stat);
-
-            $scope.character.stats.push(stat);
-            $scope.character.originalStats.push(stat2);
-          });
-
+          CharacterAttribute.list({ character_id: $scope.character._id }).$promise
+            .then(function (characterAttributes) {
+              parseAttributes(characterAttributes);
+              $scope.character.attributes = characterAttributes;
+              $scope.character.originalAttributes = angular.copy($scope.character.attributes);
+            });
         });
     };
 
     $scope.increase = function (stat, index) {
-      $scope.character.stats[index].value += 1;
-      $scope.character[stat] += 1;
+      $scope.character.attributes[index].value += 1;
       $scope.character.statPoints -= 1;
     };
 
     $scope.decrease = function (stat, index) {
-      $scope.character.stats[index].value -= 1;
-      $scope.character[stat] -= 1;
+      $scope.character.attributes[index].value -= 1;
       $scope.character.statPoints += 1;
     };
 
     $scope.saveStatPoints = function () {
-      Character.update({id: $scope.character._id}, $scope.character).$promise
-        .then(function () {
+      characterAttributeService.batchUpdate($scope.character._id, $scope.character.attributes)
+        .finally(function () {
           $scope.readCharacter();
+        })
+        .catch(function () {
+
         });
     };
 
     var watchStatPoints = function (newVal, oldVal) {
       if (typeof newVal !== 'undefined' && typeof oldVal !== 'undefined' && newVal !== oldVal) {
-        $scope.statsModified = newVal !== originalStatPoints;
+        $scope.statsModified = newVal !== $scope.character.originalStatPoints;
       }
     };
 

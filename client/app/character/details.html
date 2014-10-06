@@ -1,11 +1,7 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
 <div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <a href="{{$root.goBackUrl}}"><i class="fa fa-arrow-circle-left"></i> Go back</a>
-    </div>
-  </div>
+  <go-back></go-back>
 
   <div class="row row-heading">
     <div class="col-md-12">
@@ -57,22 +53,22 @@
             </colgroup>
             <thead>
             <tr>
-              <th>Stat</th>
-              <th class="text-center">#</th>
+              <th>Attributes</th>
+              <th></th>
             </tr>
             </thead>
             <tbody>
-              <tr ng-repeat="stat in character.stats">
-                <td>{{stat.type}}</td>
+              <tr ng-repeat="attribute in character.attributes">
+                <td>{{attribute.name}}</td>
                 <td class="text-center">
                   <button
                     class="btn btn-sm btn-danger"
-                    ng-click="decrease(stat.type, $index)"
-                    ng-disabled="character.statPoints === 0 || character.originalStats[$index].value === stat.value">
+                    ng-click="decrease(attribute.type, $index)"
+                    ng-disabled="character.originalStatPoints === 0 || character.originalAttributes[$index].value === attribute.value">
                     <i class="fa fa-minus"></i>
                   </button>
 
-                  <span>{{stat.value}}</span>
+                  <span>{{attribute.value}}</span>
 
                   <button
                     class="btn btn-sm btn-info"
@@ -129,6 +125,13 @@
           </tab-heading>
 
           My potions
+        </tab>
+        <tab>
+          <tab-heading>
+            <i class="fa fa-magic"></i> Magic
+          </tab-heading>
+
+          My magics
         </tab>
       </tabset>
     </div>

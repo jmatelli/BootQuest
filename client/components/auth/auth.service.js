@@ -154,6 +154,15 @@ angular.module('bootquestApp')
       },
 
       /**
+       * Check if a user is a crafter
+       *
+       * @return {Boolean}
+       */
+      isCrafter: function() {
+        return $rootScope.currentUser.role === 'crafter';
+      },
+
+      /**
        * Get auth token
        */
       getToken: function() {

@@ -47,10 +47,7 @@
           <div class="col-md-8">
             <input type="hidden" name="race" id="race" ng-model="character.race" required/>
             <div class="btn-group btn-group-justified">
-              <label class="btn btn-default" ng-model="character.race" btn-radio="'human'">Human</label>
-              <label class="btn btn-default" ng-model="character.race" btn-radio="'elf'">Elf</label>
-              <label class="btn btn-default" ng-model="character.race" btn-radio="'dwarf'">Dwarf</label>
-              <label class="btn btn-default" ng-model="character.race" btn-radio="'orc'">Orc</label>
+              <label class="btn btn-default" ng-repeat="race in races" btn-radio="'{{race._id}}'" ng-model="character._race">{{race.name}}</label>
             </div>
             <p class="help-block" ng-show="form.race.$error.required && submitted">
               What's the race of your character?
@@ -65,10 +62,7 @@
           <div class="col-md-8">
             <input type="hidden" name="class" id="class" ng-model="character.class" required/>
             <div class="btn-group btn-group-justified">
-              <label class="btn btn-default" ng-model="character.class" btn-radio="'knight'">Knight</label>
-              <label class="btn btn-default" ng-model="character.class" btn-radio="'rogue'">Rogue</label>
-              <label class="btn btn-default" ng-model="character.class" btn-radio="'mage'">Mage</label>
-              <label class="btn btn-default" ng-model="character.class" btn-radio="'cleric'">Cleric</label>
+              <label class="btn btn-default" ng-repeat="klass in klasses" btn-radio="'{{klass._id}}'" ng-model="character._klass">{{klass.name}}</label>
             </div>
             <p class="help-block" ng-show="form.class.$error.required && submitted">
               What's the class of your character?
@@ -163,6 +157,10 @@
         </div>
 
       </form>
+    </div>
+
+    <div class="col-md-6">
+      <pre>{{character|json}}</pre>
     </div>
   </div>
 </div>

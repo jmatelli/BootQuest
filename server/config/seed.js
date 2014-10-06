@@ -5,32 +5,125 @@
 
 'use strict';
 
-var Thing = require('../api/thing/thing.model');
 var User = require('../api/user/user.model');
 var Character = require('../api/character/character.model');
+var Race = require('../api/race/race.model');
+var Klass = require('../api/klass/klass.model');
+var Attribute = require('../api/attribute/attribute.model');
+var CharacterAttribute = require('../api/characterAttribute/characterAttribute.model');
+var WeaponType = require('../api/weaponType/weaponType.model');
 
-Thing.find({}).remove(function() {
-  Thing.create({
-    name : 'Development Tools',
-    info : 'Integration with popular tools such as Bower, Grunt, Karma, Mocha, JSHint, Node Inspector, Livereload, Protractor, Jade, Stylus, Sass, CoffeeScript, and Less.'
+/**
+ * Fixtures Races
+ */
+Race.find({}).remove(function () {
+  Race.create({
+    name: 'Human',
+    label: 'human',
+    value: 0,
+    description: '',
+    active: true
   }, {
-    name : 'Server and Client integration',
-    info : 'Built with a powerful and fun stack: MongoDB, Express, AngularJS, and Node.'
+    name: 'Elf',
+    label: 'elf',
+    value: 1,
+    description: '',
+    active: true
   }, {
-    name : 'Smart Build System',
-    info : 'Build system ignores `spec` files, allowing you to keep tests alongside code. Automatic injection of scripts and styles into your index.html'
-  },  {
-    name : 'Modular Structure',
-    info : 'Best practice client and server structures allow for more code reusability and maximum scalability'
-  },  {
-    name : 'Optimized Build',
-    info : 'Build process packs up your templates as a single JavaScript payload, minifies your scripts/css/images, and rewrites asset names for caching.'
-  },{
-    name : 'Deployment Ready',
-    info : 'Easily deploy your app to Heroku or Openshift with the heroku and openshift subgenerators'
+    name: 'Dwarf',
+    label: 'dwarf',
+    value: 2,
+    description: '',
+    active: true
+  }, {
+    name: 'Orc',
+    label: 'orc',
+    value: 3,
+    description: '',
+    active: true
+  }, function () {
+    console.log('finished populating races');
   });
 });
 
+
+/**
+ * Fixtures Klasses
+ */
+Klass.find({}).remove(function () {
+  Klass.create({
+    name: 'Fighter',
+    label: 'fighter',
+    value: 0,
+    description: '',
+    active: true
+  }, {
+    name: 'Rogue',
+    label: 'rogue',
+    value: 1,
+    description: '',
+    active: true
+  }, {
+    name: 'Wizard',
+    label: 'wizard',
+    value: 2,
+    description: '',
+    active: true
+  }, {
+    name: 'CLeric',
+    label: 'cleric',
+    value: 3,
+    description: '',
+    active: true
+  }, function () {
+    console.log('finished populating klasses');
+  });
+});
+
+
+/**
+ * Fixtures Attributes
+ */
+Attribute.find({}).remove(function () {
+  Attribute.create({
+    name: 'Strength',
+    label: 'strength',
+    value: 0,
+    description: '',
+    active: true
+  }, {
+    name: 'Constitution',
+    label: 'constitution',
+    value: 1,
+    description: '',
+    active: true
+  }, {
+    name: 'Dexterity',
+    label: 'dexterity',
+    value: 2,
+    description: '',
+    active: true
+  }, {
+    name: 'Intelligence',
+    label: 'intelligence',
+    value: 3,
+    description: '',
+    active: true
+  }, {
+    name: 'Luck',
+    label: 'luck',
+    value: 4,
+    description: '',
+    active: true
+  }, function () {
+    console.log('finished populating attributes')
+  })
+});
+
+
+/**
+ * Fixtures Users
+ */
 User.find({}).remove(function() {
   User.create({
     provider: 'local',
@@ -44,11 +137,110 @@ User.find({}).remove(function() {
     email: 'admin@admin.com',
     password: 'admin'
   }, function() {
+
+      /**
+       * Fixtures characters
+       */
+      Character.find({}).remove(function () {
+        User.findOne({ email: 'test@test.com' }, function (err1, doc1) {
+          Race.findOne({ label: 'human' }, function (err2, doc2) {
+            Klass.findOne({ label: 'rogue' }, function (err3, doc3) {
+              Character.create({
+                name: 'Jan Uary',
+                _creator: doc1._id,
+                _race: doc2._id,
+                _klass: doc3._id
+              }, function () {
+
+                /**
+                 * Character's attributes
+                 */
+                Character.findOne({ _creator: doc1._id }, function (err4, doc4) {
+                  CharacterAttribute.find({}).remove(function () {
+                    Attribute.findOne({ label: 'strength' }, function (err5, doc5) {
+                      CharacterAttribute.create({
+                        _character: doc4._id,
+                        _attribute: doc5._id,
+                        value: 10
+                      }, function () {
+                        console.log('finished giving strength to character')
+                      });
+                    });
+                    Attribute.findOne({ label: 'constitution' }, function (err5, doc5) {
+                      CharacterAttribute.create({
+                        _character: doc4._id,
+                        _attribute: doc5._id,
+                        value: 10
+                      }, function () {
+                        console.log('finished giving constitution to character')
+                      });
+                    });
+                    Attribute.findOne({ label: 'dexterity' }, function (err5, doc5) {
+                      CharacterAttribute.create({
+                        _character: doc4._id,
+                        _attribute: doc5._id,
+                        value: 10
+                      }, function () {
+                        console.log('finished giving dexterity to character')
+                      });
+                    });
+                    Attribute.findOne({ label: 'intelligence' }, function (err5, doc5) {
+                      CharacterAttribute.create({
+                        _character: doc4._id,
+                        _attribute: doc5._id,
+                        value: 10
+                      }, function () {
+                        console.log('finished giving intelligence to character')
+                      });
+                    });
+                    Attribute.findOne({ label: 'luck' }, function (err5, doc5) {
+                      CharacterAttribute.create({
+                        _character: doc4._id,
+                        _attribute: doc5._id,
+                        value: 10
+                      }, function () {
+                        console.log('finished giving luck to character')
+                      });
+                    });
+                  });
+                });
+                console.log('finished populating characters')
+              });
+            });
+          });
+        });
+      });
       console.log('finished populating users');
     }
   );
 });
 
-Character.find({}).remove(function () {
-  console.log('finished emptying characters')
+
+/**
+ * Fixtures weapon types
+ */
+WeaponType.find({}).remove(function () {
+  WeaponType.create({
+    name: 'Short Sword',
+    value: 0,
+    hand_slots: 1,
+    description: 'A one handed short sword'
+  }, {
+    name: 'Long Sword',
+    value: 1,
+    hand_slots: 2,
+    description: 'A two handed long sword'
+  }, {
+    name: 'Short Axe',
+    value: 2,
+    hand_slots: 1,
+    description: 'A one handed short axe'
+  }, {
+    name: 'Big Axe',
+    value: 3,
+    hand_slots: 2,
+    description: 'A two handed big axe'
+  }, function () {
+    console.log('finished populating weapons types')
+  })
 });

@@ -25,8 +25,10 @@
 
     <div class="col-md-4" ng-repeat="character in characters" ng-if="nbCharacters > 0">
       <div class="panel panel-default">
-        <div class="panel-heading">
-          <a href="/character/{{character._id}}"><i class="fa fa-user"></i> {{character.name}}</a>
+        <div class="panel-heading clearfix">
+          <a class="pull-left" href="/character/{{character._id}}"><i class="fa fa-user"></i> {{character.name}}</a>
+          <span class="pull-left character-infos">{{character.race}}, {{character.klass}}</span>
+          <span class="pull-right">Level {{character.level}}</span>
         </div>
         <div class="panel-body">
           <div class="progress">
@@ -59,11 +61,11 @@
         </div>
         <div class="panel-footer clearfix">
           <button
-            class="btn btn-lg btn-danger pull-right"
+            class="btn btn btn-danger pull-right"
             confirm="deleteCharacter(character._id)"
             confirm-title="Confirm"
             confirm-message="You're about to remove one of your characters, are you sure?"><i class="fa fa-times"></i> Remove</button>
-          <a class="btn btn-lg btn-primary pull-right" href="/character/{{character._id}}"><i class="fa fa-eye"></i> See details</a>
+          <a class="btn btn btn-primary pull-right" href="/character/{{character._id}}"><i class="fa fa-eye"></i> See details</a>
         </div>
       </div>
     </div>

@@ -7,14 +7,9 @@ var mongoose = require('mongoose'),
 var CharacterSchema = new Schema({
   _creator :          { type: Schema.Types.ObjectId, ref: 'User' },
   name:               String,
-  race:               String,
-  class:              String,
+  _race:              { type: Schema.Types.ObjectId, ref: 'Race' },
+  _klass:             { type: Schema.Types.ObjectId, ref: 'Klass' },
   level:              { type: Number, default: 1 },
-  strength:           Number,
-  constitution:       Number,
-  dexterity:          Number,
-  intelligence:       Number,
-  luck:               Number,
   exp:                { type: Number, default: 0 },
   nextLevel:          { type: Number, default: 1000 },
   statPoints:         { type: Number, default: 0 },
@@ -44,14 +39,6 @@ CharacterSchema
 
 CharacterSchema.pre('save', function (next) {
   this.slug = slug(this.name).toLowerCase();
-  this.hp = Math.floor(this.hp + (((this.constitution-10)/2) * this.level));
-  this.mp = Math.floor(this.mp + (((this.intelligence-10)/2) * this.level));
-  if (this.hp < this.currentHp) {
-    this.currentHp = this.hp;
-  }
-  if (this.mp < this.currentMp) {
-    this.currentMp = this.mp;
-  }
   next();
 });
 

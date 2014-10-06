@@ -10,6 +10,10 @@ angular.module('bootquestApp')
       'title': 'Character',
       'link': '/character',
       authenticated: true
+    },{
+      'title': 'Shop',
+      'link': '/shop',
+      authenticated: true
     }];
 
     $rootScope.nameToShow = !$rootScope.currentUser.useRealName || typeof $rootScope.currentUser.name === 'undefined' ? $rootScope.currentUser.username : $rootScope.currentUser.name;
