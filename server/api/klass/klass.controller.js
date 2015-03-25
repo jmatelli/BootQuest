@@ -5,9 +5,9 @@ var Klass = require('./klass.model');
 
 // Get list of klasss
 exports.index = function(req, res) {
-  Klass.find(function (err, klasss) {
+  Klass.find(function (err, klass) {
     if(err) { return handleError(res, err); }
-    return res.json(200, klasss);
+    return res.json(200, klass);
   });
 };
 

@@ -70,7 +70,7 @@ Klass.find({}).remove(function () {
     description: '',
     active: true
   }, {
-    name: 'CLeric',
+    name: 'Cleric',
     label: 'cleric',
     value: 3,
     description: '',

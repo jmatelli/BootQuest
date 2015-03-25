@@ -66,12 +66,11 @@ angular.module('bootquestApp')
 
     $scope.character = {};
     $scope.character._creator = $rootScope.currentUser._id;
-    $scope.character.stats = {};
-    $scope.character.stats.strength = 10;
-    $scope.character.stats.constitution = 10;
-    $scope.character.stats.dexterity = 10;
-    $scope.character.stats.intelligence = 10;
-    $scope.character.stats.luck = 10;
+    $scope.character.strength = 10;
+    $scope.character.constitution = 10;
+    $scope.character.dexterity = 10;
+    $scope.character.intelligence = 10;
+    $scope.character.luck = 10;
 
     $scope.modifiers = {};
     $scope.modifiers.race = {};
@@ -103,29 +102,29 @@ angular.module('bootquestApp')
       constitution: -1,
       luck: 0
     };
-    $scope.modifiers.class = {};
-    $scope.modifiers.class.knight = {
+    $scope.modifiers.klass = {};
+    $scope.modifiers.klass.fighter = {
       intelligence: -2,
       strength: 2,
       constitution: 1,
       dexterity: -1,
       luck: 0
     };
-    $scope.modifiers.class.rogue = {
+    $scope.modifiers.klass.rogue = {
       constitution: -2,
       dexterity: 2,
       luck: 1,
       strength: -1,
       intelligence: 0
     };
-    $scope.modifiers.class.mage = {
+    $scope.modifiers.klass.wizard = {
       strength: -2,
       intelligence: 2,
       constitution: 1,
       dexterity: -1,
       luck: 0
     };
-    $scope.modifiers.class.cleric = {
+    $scope.modifiers.klass.cleric = {
       dexterity: -2,
       intelligence: 2,
       luck: 1,
@@ -183,25 +182,31 @@ angular.module('bootquestApp')
 
     var watchRace = function (newVal, oldVal) {
       if (typeof newVal !== 'undefined' && newVal !== oldVal) {
-        for (var stat in $scope.character.stats) {
-          if ($scope.character.stats.hasOwnProperty(stat) && $scope.modifiers.race[newVal].hasOwnProperty(stat)) {
-            var otherModifier = typeof $scope.character.class !== 'undefined' ? $scope.modifiers.class[$scope.character.class][stat] : 0;
-            $scope.character.stats[stat] = baseStatVal + $scope.modifiers.race[newVal][stat] + otherModifier;
-            $scope.character[stat] = baseStatVal + $scope.modifiers.race[newVal][stat] + otherModifier;
-          }
-        }
+        Race.read({ 'id': newVal }).$promise
+          .then(function (race) {
+            $scope.race = race.label;
+            for (var stat in $scope.character) {
+              if ($scope.character.hasOwnProperty(stat) && $scope.modifiers.race[race.label].hasOwnProperty(stat)) {
+                var otherModifier = typeof $scope.klass !== 'undefined' ? $scope.modifiers.klass[$scope.klass][stat] : 0;
+                $scope.character[stat] = baseStatVal + $scope.modifiers.race[race.label][stat] + otherModifier;
+              }
+            }
+          });
       }
     };
 
-    var watchClass = function (newVal, oldVal) {
+    var watchKlass = function (newVal, oldVal) {
       if (typeof newVal !== 'undefined' && newVal !== oldVal) {
-        for (var stat in $scope.character.stats) {
-          if ($scope.character.stats.hasOwnProperty(stat) && $scope.modifiers.class[newVal].hasOwnProperty(stat)) {
-            var otherModifier = typeof $scope.character.race !== 'undefined' ? $scope.modifiers.race[$scope.character.race][stat] : 0;
-            $scope.character.stats[stat] = baseStatVal + $scope.modifiers.class[newVal][stat] + otherModifier;
-            $scope.character[stat] = baseStatVal + $scope.modifiers.class[newVal][stat] + otherModifier;
-          }
-        }
+        Klass.read({ 'id': newVal }).$promise
+          .then(function (klass) {
+            $scope.klass = klass.label;
+            for (var stat in $scope.character) {
+              if ($scope.character.hasOwnProperty(stat) && $scope.modifiers.klass[klass.label].hasOwnProperty(stat)) {
+                var otherModifier = typeof $scope.race !== 'undefined' ? $scope.modifiers.race[$scope.race][stat] : 0;
+                $scope.character[stat] = baseStatVal + $scope.modifiers.klass[klass.label][stat] + otherModifier;
+              }
+            }
+          });
       }
     };
 
@@ -210,7 +215,7 @@ angular.module('bootquestApp')
      * Watchers
      */
     $scope.$watch('character.race', watchRace);
-    $scope.$watch('character.class', watchClass);
+    $scope.$watch('character.klass', watchKlass);
 
   })
 
