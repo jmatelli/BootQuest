@@ -214,8 +214,8 @@ angular.module('bootquestApp')
     /**
      * Watchers
      */
-    $scope.$watch('character.race', watchRace);
-    $scope.$watch('character.klass', watchKlass);
+    $scope.$watch('character._race', watchRace);
+    $scope.$watch('character._klass', watchKlass);
 
   })
 
