@@ -51,87 +51,79 @@ angular.module('bootquestApp')
     });
   })
 
-  /**
-   * Album tag service
-   */
-  .factory('characterService', function( $q ,  Character ) {
+  .factory('characterService', function($q, Character) {
+    return {
+      EVENT_TYPE_STAGE: 0,
+      EVENT_TYPE_ERROR: 1,
 
-      return {
-        EVENT_TYPE_STAGE: 0,
-        EVENT_TYPE_ERROR: 1,
+      batchDelete: function(characters) {
+        var deferred = $q.defer();
+        var nbErrors = 0;
+        var self = this;
 
-        batchDelete: function(characters) {
-          var deferred = $q.defer();
-          var nbErrors = 0;
-          var self = this;
+        var _delete = function(i) {
+          if (i === characters.length) {
+            if(nbErrors === 0) deferred.resolve();
+            else deferred.reject(nbErrors);
 
-          var _delete = function(i) {
-            if (i === characters.length) {
-              if(nbErrors === 0) deferred.resolve();
-              else deferred.reject(nbErrors);
+            return;
+          }
 
-              return;
-            }
+          Character.delete({ id: characters[i]._id }).$promise
+            .catch(function() {
+              nbErrors++;
+              deferred.notify({ type: self.EVENT_TYPE_ERROR });
+            })
+            .finally(function() {
+              deferred.notify({ type: self.EVENT_TYPE_STAGE, stage: ++i });
+              _delete(i);
+            });
+        };
 
-            Character.delete({ id: characters[i]._id }).$promise
-              .catch(function() {
-                nbErrors++;
-                deferred.notify({ type: self.EVENT_TYPE_ERROR });
-              })
-              .finally(function() {
-                deferred.notify({ type: self.EVENT_TYPE_STAGE, stage: ++i });
-                _delete(i);
-              });
-          };
+        _delete(0);
 
-          _delete(0);
+        return deferred.promise;
+      }
+    };
+  })
 
-          return deferred.promise;
-        }
-      };
-    })
+  .factory('characterAttributeService', function($q, CharacterAttribute) {
+    return {
+      EVENT_TYPE_STAGE: 0,
+      EVENT_TYPE_ERROR: 1,
 
-    /**
-     * Album tag service
-     */
-    .factory('characterAttributeService', function( $q ,  CharacterAttribute ) {
+      batchUpdate: function(characterId, characterAttributes) {
+        var deferred = $q.defer();
+        var nbErrors = 0;
+        var self = this;
 
-      return {
-        EVENT_TYPE_STAGE: 0,
-        EVENT_TYPE_ERROR: 1,
+        console.log(characterAttributes);
 
-        batchUpdate: function(characterId, characterAttributes) {
-          var deferred = $q.defer();
-          var nbErrors = 0;
-          var self = this;
+        var _update = function(i) {
+          if (i === characterAttributes.length) {
+            if(nbErrors === 0) deferred.resolve();
+            else deferred.reject(nbErrors);
 
-          console.log(characterAttributes);
+            return;
+          }
 
-          var _update = function(i) {
-            if (i === characterAttributes.length) {
-              if(nbErrors === 0) deferred.resolve();
-              else deferred.reject(nbErrors);
+          CharacterAttribute.update(
+            { character_id: characterId, character_attribute_id: characterAttributes[i]._id },
+            characterAttributes[i]
+          ).$promise
+            .catch(function() {
+              nbErrors++;
+              deferred.notify({ type: self.EVENT_TYPE_ERROR });
+            })
+            .finally(function() {
+              deferred.notify({ type: self.EVENT_TYPE_STAGE, stage: ++i });
+              _update(i);
+            });
+        };
 
-              return;
-            }
+        _update(0);
 
-            CharacterAttribute.update(
-              { character_id: characterId, character_attribute_id: characterAttributes[i]._id },
-              characterAttributes[i]
-            ).$promise
-              .catch(function() {
-                nbErrors++;
-                deferred.notify({ type: self.EVENT_TYPE_ERROR });
-              })
-              .finally(function() {
-                deferred.notify({ type: self.EVENT_TYPE_STAGE, stage: ++i });
-                _update(i);
-              });
-          };
-
-          _update(0);
-
-          return deferred.promise;
-        }
-      };
-    });
+        return deferred.promise;
+      }
+    };
+  });

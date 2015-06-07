@@ -35,20 +35,19 @@ exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
   CharacterAttribute.findById(req.params.character_attribute_id, function (err, characterAttribute) {
     var characterId = characterAttribute._character;
-    var constitutionId, intelligenceId;
 
     // get the id of the constitution attribute
-    Attribute.findOne({ label: 'constitution' }, function (err, attribute) {
+    var constitutionId = Attribute.findOne({ label: 'constitution' }, function (err, attribute) {
       if (err) { return handleError(res, err); }
       if(!attribute) { return res.send(404); }
-      constitutionId = attribute._id;
+      return attribute._id;
     });
 
     // get the id of the intelligence attribute
-    Attribute.findOne({ label: 'intelligence' }, function (err, attribute) {
+    var intelligenceId = Attribute.findOne({ label: 'intelligence' }, function (err, attribute) {
       if (err) { return handleError(res, err); }
       if(!attribute) { return res.send(404); }
-      intelligenceId = attribute._id;
+      return attribute._id;
     });
 
     if (err) { return handleError(res, err); }
